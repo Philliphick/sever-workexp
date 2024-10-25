@@ -1,0 +1,8 @@
+{% extends 'layout.njk' %}
+
+{% block content %}
+<h2>{{ plant.common_name }}</h2>
+<p><strong>Scientific Name:</strong> {{ plant.scientific_name }}</p>
+<p><strong>Description:</strong> {{ plant.description }}</p>
+<a href="/plants">Back to Plants List</a>
+{% endblock %}
