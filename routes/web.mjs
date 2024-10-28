@@ -3,19 +3,28 @@ import fetch from "node-fetch";
 
 const appRoutes = express.Router();
 
+// Utility function to fetch data from the API
+const fetchData = async (url) => {
+  const response = await fetch(url);
+  if (!response.ok) {
+    const errorBody = await response.text();
+    throw new Error(`Error ${response.status}: ${errorBody}`);
+  }
+  return await response.json();
+};
 
 // Route to render a list of plants
 appRoutes.get("/", async (req, res) => {
   try {
-    const response = await fetch(`http://localhost:3005/api/plants`);
+    console.log("hello")
 
-    const data = await response.json();
-    console.log("in app routes", data);
+    const data = await fetchData(`http://localhost:3005/api/plants`);
+    console.log("Fetched plants:", data);
 
     res.render("index.njk", {
       title: "Plants List",
       page: "plants",
-      plants: data.data,
+      plants: data.data, // Assuming data.data contains the plant array
     });
   } catch (error) {
     console.error("Error fetching plants:", error);
@@ -27,11 +36,14 @@ appRoutes.get("/", async (req, res) => {
 appRoutes.get("/plant/:name", async (req, res) => {
   const { name } = req.params;
   try {
-    console.log("in plants", name);
+    console.log("Fetching details for plant:", name);
 
-    const response = await fetch(`http://localhost:3005/api/plant/${name}`);
-    const data = await response.json();
-    res.render("index.njk", { title: name, page: "plantDetail", plant: data });
+    const data = await fetchData(`http://localhost:3005/api/plant/${name}`);
+    res.render("index.njk", {
+      title: name,
+      page: "plantDetail",
+      plant: data, // Assuming data contains the plant object
+    });
   } catch (error) {
     console.error("Error fetching plant:", error);
     res.status(500).send("Error fetching plant details.");

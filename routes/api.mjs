@@ -1,5 +1,4 @@
 import express from 'express';
-
 import { getByName, getAll } from '../controllers/plantController.mjs';
 
 const apiRoutes = express.Router();

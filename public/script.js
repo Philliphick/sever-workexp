@@ -1,4 +1,3 @@
-// Add event listener to the form on DOMContentLoaded
 document.addEventListener("DOMContentLoaded", () => {
   fetchAllPlants();
   const form = document.getElementById("plant-form");
@@ -7,10 +6,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
 // Handle search on form submission
 const handleSearch = (e) => {
-  e.preventDefault(); // Prevent the default form submission behavior
+  e.preventDefault(); 
   const searchValue = document.getElementById("plant-search").value.trim();
   if (searchValue) {
-    fetchPlants(searchValue); // Call fetchPlants with the search value
+    fetchPlants(searchValue);
   } else {
     console.log("Please enter a search term.");
   }
@@ -21,7 +20,7 @@ const fetchPlants = async (plantSearch) => {
   try {
     const response = await fetch(
       `/api/plant/${plantSearch}`
-    ); // Adjust the endpoint to include search query
+    ); 
     console.log(response)
     if (!response.ok) {
       throw new Error("No results found");
@@ -85,8 +84,8 @@ const fetchAllPlants = async () => {
 const displayPlants = (data) => {
   const plantsContainer = document.getElementById("plants-container");
   plantsContainer.innerHTML = "";
-
-  data.data.forEach((plant) => {
+console.log(data)
+  data.forEach((plant) => {
     const plantElement = document.createElement("div");
     plantElement.className = "plant-item";
     plantElement.innerHTML = `
