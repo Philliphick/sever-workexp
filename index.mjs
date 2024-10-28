@@ -1,8 +1,8 @@
 import express from "express";
 import nunjucks from "nunjucks";
 import "dotenv/config";
-import apiRoutes from "./services/apiRoutes.mjs";
-import appRoutes from "./services/appRoutes.mjs";
+import apiRoutes from "./routes/api.mjs";
+import appRoutes from "./routes/web.mjs";
 import cors from "cors";
 
 const app = express();
