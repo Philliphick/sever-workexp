@@ -1,6 +1,46 @@
-{% extends 'layout.njk' %}
-
-{% block content %}
-<h2>Welcome to the Plant App!</h2>
-<p>Explore various plants and learn more about them.</p>
-{% endblock %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/styles.css" />
+    <title>Plantly</title>
+</head>
+<body>
+    <header>
+        <h1>Plantify</h1>
+    </header>
+    <main>
+        <form id="plant-form">
+            <label for="plant-search">Search plants by name:</label>
+            <input type="text" id="plant-search" name="plant" placeholder="Enter plant name" required />
+            <button type="submit">Search</button>
+        </form>
+        <section id="my-collection">
+            <h4>Your Collection:</h4>
+            <!-- Users plant collection will be dynamically added here -->
+        </section>
+        <div class="PlantCards">
+            <section id="search-results">
+                <h2>Search Results:</h2>
+                <!-- Search results will be dynamically populated here -->
+            </section>
+            <section id="plants-container">
+                <h2>All Plants:</h2>
+                <ul>
+                    {% for plant in plants %}
+                        <li>
+                            <a href="/plant/{{ plant.common_name | urlencode }}">
+                                <strong>{{ plant.common_name }}</strong><br />
+                                <em>{{ plant.scientific_name }}</em><br /> 
+                                <img src="{{ plant.image_url }}" alt="{{ plant.common_name }}" width="100" />
+                            </a>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </section>
+        </div>
+    </main>
+    <script src="script.js" type="module"></script>
+</body>
+</html>

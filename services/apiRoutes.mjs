@@ -1,12 +1,13 @@
 import express from 'express';
-import * as plantController from '../controllers/plantController.mjs'; // Change the import style
+
+import { getByName, getAll } from '../controllers/plantController.mjs';
 
 const apiRoutes = express.Router();
 
 // Get all plants
-apiRoutes.get('/plants', plantController.getAll);
+apiRoutes.get("/plants", getAll);
 
 // Get a plant by common name
-apiRoutes.get('/plant/:name', plantController.getByName);
+apiRoutes.get("/plant/:name", getByName);
 
-export default apiRoutes; // Use export default for ES Modules
+export default apiRoutes;

@@ -1,20 +1,22 @@
-import express from 'express';
-import fetch from 'node-fetch'; 
+import express from "express";
+import fetch from "node-fetch";
 
 const appRoutes = express.Router();
 
 
-// Homepage route
-appRoutes.get("/", (req, res) => {
-  res.render("index.njk", { title: "Home Page" });
-});
-
 // Route to render a list of plants
-appRoutes.get("/plants", async (req, res) => {
+appRoutes.get("/", async (req, res) => {
   try {
-    const response = await fetch(`http://localhost:3000/api/plants`);
+    const response = await fetch(`http://localhost:3005/api/plants`);
+
     const data = await response.json();
-    res.render("plants.njk", { title: "Plants List", plants: data });
+    console.log("in app routes", data);
+
+    res.render("index.njk", {
+      title: "Plants List",
+      page: "plants",
+      plants: data.data,
+    });
   } catch (error) {
     console.error("Error fetching plants:", error);
     res.status(500).send("Error fetching plants.");
@@ -25,9 +27,11 @@ appRoutes.get("/plants", async (req, res) => {
 appRoutes.get("/plant/:name", async (req, res) => {
   const { name } = req.params;
   try {
-    const response = await fetch(`http://localhost:3000/api/plant/${name}`);
+    console.log("in plants", name);
+
+    const response = await fetch(`http://localhost:3005/api/plant/${name}`);
     const data = await response.json();
-    res.render("plantDetail.njk", { title: name, plant: data });
+    res.render("index.njk", { title: name, page: "plantDetail", plant: data });
   } catch (error) {
     console.error("Error fetching plant:", error);
     res.status(500).send("Error fetching plant details.");
