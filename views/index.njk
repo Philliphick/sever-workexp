@@ -20,42 +20,51 @@
                 <h4>Your Collection:</h4>
                 <!-- Users plant collection will be dynamically added here -->
             </section>
-            <div class="PlantCards">
-                <section id="search-results">
-                    <h2>Search Results:</h2>
-                    <!-- Search results will be dynamically populated here -->
-                </section>
-                <section id="plants-container">
-                    <h2>All Plants:</h2>
-                    <ul>
+            <div
+                class="PlantCards">
+                {# <h2>All Plants:</h2> #}
+                <section>
+                    <ul id="plants-container">
                         {% for plant in plants %}
-                            <li>
-                                <a href="/plant/{{ plant.common_name | urlencode }}">
-                                    <strong>{{ plant.common_name }}</strong><br/>
-                                    <em>{{ plant.scientific_name }}</em><br/> <img src="{{ plant.image_url }}" alt="{{ plant.common_name }}" width="100"/>
-                                </a>
+                            <li class="plant-item">
+                                <img class="plant-image" src="{{ plant.image_url }}" alt="{{ plant.common_name }}" width="100"/>
+                                <h3>{{ plant.common_name }}</h3>
+                                <em>{{ plant.scientific_name }}</em>
+                                <p>Year: {{ plant.year }}</p>
+                                <p>Bibliography:{{ plant.bibligography }}</p>
+                                <p>Family: {{ plant.family }}</p>
                             </li>
                         {% endfor %}
                     </ul>
                 </section>
-                {% if page == 'plantDetail' %}
-                    <h1>{{ title }}</h1>
-                    <div class="plant-detail">
-                        <img src="{{ plant.image_url }}" alt="{{ plant.common_name }}" class="plant-image">
-                        <h3>{{ plant.common_name }} ({{ plant.scientific_name }})</h3>
-                        <p>
-                            <strong>Year:</strong>
-                            {{ plant.year }}</p>
-                        <p>
-                            <strong>Bibliography:</strong>
-                            {{ plant.bibliography }}</p>
-                        <p>
-                            <strong>Family:</strong>
-                            {{ plant.family }}</p>
-                    </div>
+                {% if page == 'searchResult' %}
+                    <section id="search-results">
+                        <h3>{{ title }}</h3>
+                        <div class="result-item">
+                            {% if plants %}
+                                <img src="{{ plants.image_url }}" alt="{{ plant.common_name }}"/>
+                                <p>
+                                    <strong>Common Name:</strong>
+                                    {{ plants.common_name }}</p>
+                                <p>
+                                    <strong>Scientific Name:</strong>
+                                    {{ plants.scientific_name }}</p>
+                                <p>
+                                    <strong>Year:</strong>
+                                    {{ plants.year }}</p>
+                                <p>
+                                    <strong>Bibliography:</strong>
+                                    {{ plants.bibliography }}</p>
+                                <p>
+                                    <strong>Family:</strong>
+                                    {{ plants.family }}</p>
+                            {% else %}
+                                <p>Plant data is not available.</p>
+                            {% endif %}
+                        </div>
+                    </section>
                 {% endif %}
             </div>
-        </main>
-        <script src="script.js" type="module"></script>
+        </body>
     </body>
-</html>
+</html></main><script src="script.js" type="module"></script></body></html>

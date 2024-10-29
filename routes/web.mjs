@@ -1,30 +1,41 @@
 import express from "express";
-import fetch from "node-fetch";
+import { getAllPlants } from "../service/plants.mjs";
 
 const appRoutes = express.Router();
 
-// Utility function to fetch data from the API
-const fetchData = async (url) => {
-  const response = await fetch(url);
-  if (!response.ok) {
-    const errorBody = await response.text();
-    throw new Error(`Error ${response.status}: ${errorBody}`);
-  }
-  return await response.json();
-};
+// insert code in the space available to fetch the data you need.
+// There is a controller available for you to use to fetch some plant data.
+// getAllPlants
+// Will Return: all plants
+// Extension: if you implement a search feature, you can pass the query parameter
+// as an argument to the above controller to return a result for a specific plant.
 
 // Route to render a list of plants
-appRoutes.get("/", async (req, res) => {
+appRoutes.get("/", async (req, res, next) => {
+  const { plant } = req.query;
+  console.log(plant, "web");
+  if (plant) {
+    console.log("here", plant, plant);
+    try {
+      const plants = await getAllPlants(plant);
+      console.log("plants", plants);
+      return res.render("index.njk", {
+        title: "Search results:",
+        page: "searchResult",
+        plants,
+      });
+    } catch (error) {
+      console.error("Error fetching plants:", error);
+      return res.status(500).send("Error fetching plants.");
+    }
+  }
+
   try {
-    console.log("hello")
-
-    const data = await fetchData(`http://localhost:3005/api/plants`);
-    console.log("Fetched plants:", data);
-
+    const plants = await getAllPlants(); // Call getAllPlants directly
     res.render("index.njk", {
       title: "Plants List",
       page: "plants",
-      plants: data.data, // Assuming data.data contains the plant array
+      plants, // Pass the fetched plants directly
     });
   } catch (error) {
     console.error("Error fetching plants:", error);
@@ -33,21 +44,22 @@ appRoutes.get("/", async (req, res) => {
 });
 
 // Route for a specific plant
-appRoutes.get("/plant/:name", async (req, res) => {
-  const { name } = req.params;
-  try {
-    console.log("Fetching details for plant:", name);
-
-    const data = await fetchData(`http://localhost:3005/api/plant/${name}`);
-    res.render("index.njk", {
-      title: name,
-      page: "plantDetail",
-      plant: data, // Assuming data contains the plant object
-    });
-  } catch (error) {
-    console.error("Error fetching plant:", error);
-    res.status(500).send("Error fetching plant details.");
-  }
-});
+// appRoutes.get("/plant/:name", async (req, res) => {
+//   const { name } = req.params;
+//   try {
+//     const plant = await getPlantByName(name);
+//     if (!plant) {
+//       return res.status(404).send("Plant not found.");
+//     }
+//     res.render("index.njk", {
+//       title: plant.common_name,
+//       page: "plantResult",
+//       plant,
+//     });
+//   } catch (error) {
+//     console.error("Error fetching plant:", error);
+//     res.status(500).send("Error fetching plant details.");
+//   }
+// });
 
 export default appRoutes;

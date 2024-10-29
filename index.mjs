@@ -1,16 +1,16 @@
 import express from "express";
 import nunjucks from "nunjucks";
 import "dotenv/config";
-import apiRoutes from "./routes/api.mjs";
-import appRoutes from "./routes/web.mjs";
+import api from "./routes/api.mjs";
+import web from "./routes/web.mjs";
 import cors from "cors";
 
 const app = express();
 app.use(cors());
-app.use(express.static('public'))
+app.use(express.static("public"));
 
-app.use("/api", apiRoutes); // api router which fetches external data
-app.use("/", appRoutes); // for making requests to api for users to edit
+app.use("/api", api); // api router which fetches external data
+app.use("/", web); // for making requests to api for users to edit
 
 // Configure Nunjucks
 nunjucks.configure("views", {
@@ -24,3 +24,4 @@ app.set("view engine", "njk");
 app.listen(3005, () => {
   console.log("Server running on http://localhost:3005");
 });
+
